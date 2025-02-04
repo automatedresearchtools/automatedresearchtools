@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Automated Sensor Package</title>
+    <link rel="stylesheet" href="mechdesignstyles.css">
+    <script defer src="mechdesign.js"></script>
+</head>
+<body>
+    <!-- Banner -->
+    <header class="banner">
+        <img src="images/ART.svg" alt="ART Logo">
+        <h1>Automated Sensor Package Overview</h1>
+    </header>
+
+    <!-- Progress Bar -->
+    <div id="progress-bar-container">
+        <div id="progress-bar"></div>
+    </div>
+
+    <main>
+        <!-- Step 1: Checklist -->
+        <section id="step-1-content" class="step-content">
+            <h2>Step 1: What Services Are You Interested In?</h2>
+            <ul id="service-list">
+                <!-- Dynamically populated -->
+            </ul>
+            <div class="button-group">
+                <button onclick="goToStep(2)">Next</button>
+            </div>
+        </section>
+
+        <!-- Step 2: Client Information -->
+        <section id="step-2-content" class="step-content hidden">
+            <h2>Step 2: Provide Your Information</h2>
+            <form id="client-form" method="POST" action="https://script.google.com/macros/s/AKfycbzIi5RUn_i7bbAV4NZz25OuXn44O_k0B5a9ebe9hgu-OF9eaXXh44RGpVvEDcauZYrTXg/exec">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+            
+                <label for="company-name">Company Name:</label>
+                <input type="text" id="company-name" name="company-name" required>
+            
+                <label for="title">Title:</label>
+                <input type="text" id="title" name="title" required>
+            
+                <label for="project-description">Project Description:</label>
+                <textarea id="project-description" name="project-description" required></textarea>
+            
+                <button type="submit">Submit</button>
+            </form>
+            
+        </section>
+
+        <!-- Step 3: Schedule Consultation -->
+        <section id="step-3-content" class="step-content hidden">
+            <h2>Step 3: Schedule a Consultation</h2>
+            <p>Book a time to discuss your research needs with us, completely free. Use the calendar below to schedule your consultation:</p>
+            <iframe 
+                src="https://calendar.app.google/AwCDQnnkA89FE2pY7" 
+                frameborder="0" 
+                scrolling="no">
+            </iframe>
+            <div class="button-group">
+                <button class="previous" onclick="goToStep(2)">Previous</button>
+                <button type="button" onclick="submitForm()">Submit</button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 Automated Research Tools, LLC. All rights reserved.</p>
+    </footer>
+</body>
+</html>
