@@ -1,0 +1,177 @@
+header.banner {
+    background-color: #fff;
+    position: relative; /* Needed for absolute positioning of children */
+    padding: 20px 0;
+    border-bottom: 1px solid #eaeaea;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    height: 60px; /* Fix a header height to avoid layout jumpiness */
+}
+
+/* Logo pinned to the left */
+header.banner img {
+    position: absolute;
+    top: 50%;
+    left: 20px;
+    transform: translateY(-50%);
+    height: 50px;
+}
+
+/* Heading truly centered horizontally */
+header.banner h1 {
+    position: absolute;
+    top: 50%;
+    left: 0; 
+    width: 100%; 
+    transform: translateY(-50%);
+    text-align: center;
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #000;
+}
+
+
+
+/* Progress Bar */
+#progress-bar-container {
+    position: relative;
+    background-color: #f3f3f3;
+    height: 8px;
+    border-radius: 4px;
+    margin-top: 0;
+    width: 100%;
+}
+
+#progress-bar {
+    height: 100%;
+    width: 0%; /* Starts empty */
+    background-color: #000;
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+/* Section Styling */
+.step-content {
+    padding: 50px 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    margin: 40px auto;
+    max-width: 800px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.step-content.hidden {
+    display: none;
+}
+
+.step-content h2 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.step-content p, .step-content ul, .step-content label, .step-content input, .step-content textarea {
+    text-align: left; /* Left-align content within the step container */
+    color: #555;
+    margin-bottom: 20px;
+}
+
+/* Form Input Styling */
+
+form select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    box-sizing: border-box;
+  }
+  
+form input, form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+form label {
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: 5px;
+    display: block;
+}
+
+/* Button Group Styling */
+.button-group {
+    display: flex;
+    justify-content: flex-start; /* Align buttons on the same line */
+    gap: 10px; /* Add space between buttons */
+    margin-top: 20px;
+    margin-bottom: 40px; 
+}
+
+/* Button Styling */
+button, .button {
+    padding: 10px 20px;
+    background-color: #000;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+    color: #fff !important; /* Force white text */
+    
+}
+
+button:hover, .button:hover {
+    background-color: #333;
+}
+
+button.previous {
+    background-color: #ccc;
+    color: #000;
+}
+
+button.previous:hover {
+    background-color: #bbb;
+}
+
+/* Uniform Font Styling */
+body, h1, h2, h3, p, label, button {
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6; /* Consistent line height */
+    color: #333; /* Base text color */
+}
+
+footer {
+    background-color: #000;
+    color: #fff !important; /* Force white text */
+    text-align: center;
+    padding: 20px 0;
+    font-size: 0.9rem;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+footer,
+footer p {
+    color: #fff !important;
+    background-color: #000 !important;
+    z-index: 9999; /* Keep footer on top if it’s overlapping with other elements */
+}
+
+
+/* Google Calendar Iframe */
+iframe {
+    width: 100%;
+    height: calc(100vh - 400px); /* Adjust height to fit within the viewport */
+    border: none;
+}
+

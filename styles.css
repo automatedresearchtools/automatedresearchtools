@@ -469,13 +469,58 @@ footer {
     position: relative;
     z-index: 1; /* Ensure it does not overlap other content */
 }
-.contact-icon {
-    width: 24px; /* Adjust the width */
-    height: 24px; /* Adjust the height */
-    margin-right: 8px; /* Add spacing between the icon and text */
-    vertical-align: middle; /* Align with the text */
-}
-
-
-
+/* ======================= CONTACT FOOTER ======================= */
+.footer-contact {
+    background-color: #000000;    /* Dark background */
+    color: #ffffff;              /* White text */
+    text-align: center;
+    padding: 40px 20px;          /* Extra padding for a more spacious look */
+  }
+  
+  .footer-contact h2 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+  }
+  
+  .contact-description {
+    font-size: 1rem;
+    margin-bottom: 30px;
+    font-weight: 300;
+    line-height: 1.6;
+    color: #cccccc;              /* Slightly lighter text for contrast */
+  }
+  
+  .contact-info {
+    display: flex;
+    justify-content: center;
+    gap: 30px;                   /* Spacing between contact items */
+    flex-wrap: wrap;             /* Wrap on smaller screens */
+    margin-bottom: 20px;
+  }
+  
+  .contact-item {
+    display: flex;
+    align-items: center;
+    color: #ffffff;              /* White text for links */
+    font-weight: 500;
+    font-size: 1rem;
+    transition: color 0.3s ease;
+  }
+  
+  .contact-item:hover {
+    color: #cccccc;              /* Subtle hover effect */
+  }
+  
+  .contact-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
+    vertical-align: middle;
+  }
+  
+  .copyright {
+    font-size: 0.9rem;
+    margin-top: 20px;
+  }
+  
 

@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Automated Research Tools Design Service</title>
+    <link rel="stylesheet" href="designservice.css">
+</head>
+<body>
+    <!-- Banner -->
+    <header class="banner">
+        <img src="images/ART.svg" alt="ART Logo">
+        <h1>Start Automating Your Research</h1>
+    </header>
+
+    <!-- Progress Bar -->
+    <div id="progress-bar-container">
+        <div id="progress-bar"></div>
+    </div>
+
+    <main>
+        <!-- Step 1: Checklist -->
+        <section id="step-1-content" class="step-content">
+            <h2>Step 1: What Services Are You Interested In?</h2>
+            <ul id="service-list">
+                <!-- Dynamically populated -->
+            </ul>
+            <div class="button-group">
+                <!-- "Next" takes us to step 2 -->
+                <button type="button" onclick="goToStep(2)">Next</button>
+            </div>
+        </section>
+
+        <!-- Step 2: Client Information -->
+        <section id="step-2-content" class="step-content hidden">
+            <h2>Step 2: Provide Your Information</h2>
+            <!-- This form action sends data to your Google Apps Script -->
+            <form id="client-form">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+            
+                <label for="company-name">Company Name:</label>
+                <input type="text" id="company-name" name="company-name" required>
+            
+                <label for="title">Title:</label>
+                <input type="text" id="title" name="title" required>
+            
+                <label for="project-description">Project Description (Provide a couple of sentences on your project):</label>
+                <input type="text" id="project-description" name="project-description" required>
+
+                <label for="proposal-file">Attach a Proposal or Project Overview (PDF, DOCX, etc.):</label>
+                <input type="file" id="proposal-file" name="proposal-file" accept=".pdf,.doc,.docx" />
+
+                <label for="need-by">Need By Date:</label>
+                <select id="need-by" name="need-by" required>
+                  <option value="" disabled selected>Select a timeframe</option>
+                  <option value="1-2 weeks">1-2 weeks</option>
+                  <option value="4-6 weeks">4-6 weeks</option>
+                  <option value="10-15 weeks">10-15 weeks</option>
+                </select>
+            </form>
+            
+            <!-- Replaced direct "submit" with Next & Previous buttons -->
+            <div class="button-group">
+                <!-- Go back to Step 1 -->
+                <button class="previous" type="button" onclick="goToStep(1)">Previous</button>
+                <!-- Continue to Step 3 -->
+                <button type="button" onclick="goToStep(3)">Next</button>
+            </div>
+        </section>
+
+        
+
+        <!-- Step 3: Schedule Consultation -->
+        <section id="step-3-content" class="step-content hidden">
+            <h2>Step 3: Schedule a Consultation</h2>
+            <p>Book a time to discuss your research needs with us. Use the calendar below to schedule your consultation:</p>
+            <iframe 
+                src="https://calendar.app.google/AwCDQnnkA89FE2pY7" 
+                frameborder="0" 
+                scrolling="no">
+            </iframe>
+            <div class="button-group">
+                <!-- Go back to Step 2 -->
+                <button class="previous" type="button" onclick="goToStep(2)">Previous</button>
+                <!-- Final form submission -->
+                <button type="button" onclick="submitForm()">Submit</button>
+            </div>
+        </section>
+    </main>
+
+    <script type="module">
+        /***** 1) Import Firebase SDKs via ES Modules *****/
+        import { 
+          initializeApp 
+        } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
+        
+        import { 
+          getFirestore, 
+          collection, 
+          addDoc 
+        } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+        
+        import { 
+          getStorage, 
+          ref as storageRef, 
+          uploadBytes, 
+          getDownloadURL 
+        } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-storage.js";
+      
+        /***** 2) Firebase Config & Initialization *****/
+        const firebaseConfig = {
+          apiKey: "AIzaSyAUgLu34DPUpQ--4-O36ZjPcfpMPR1OjUU",
+          authDomain: "automatedresearchtoolsweb.firebaseapp.com",
+          projectId: "automatedresearchtoolsweb",
+          storageBucket: "automatedresearchtoolsweb.appspot.com", 
+          // ^ Double-check this matches your actual bucket name in the console
+          messagingSenderId: "920879642578",
+          appId: "1:920879642578:web:f3c4cdc32d57730a073a0b",
+          measurementId: "G-WXHJFQ05GT"
+        };
+      
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+      
+        // Firestore & Storage references
+        const db = getFirestore(app);
+        const storage = getStorage(app);
+      
+        /***** 3) Services Data *****/
+        const services = [
+            { 
+                id: "research", 
+                title: "Research & Ideation", 
+                details: ["Literature Review and Patent Search", "Market Analysis"],
+                hourlyRate: 15,
+            },
+            {
+                id: "cad",
+                title: "CAD Modeling",
+                details: ["SolidWorks CAD Model"],
+                hourlyRate: 15,
+            },
+            {
+                id: "simulation",
+                title: "Simulation",
+                details: ["ANSYS FEA", "Simulation Documentation"],
+                hourlyRate: 20,
+            },
+            {
+                id: "review",
+                title: "Client Review",
+                details: ["System Overview Documentation", "Training"],
+                hourlyRate: 10,
+            },
+        ];
+      
+       /***** 4) Step Navigation Logic *****/
+        window.goToStep = function(step) {
+        // Hide all .step-content sections
+        document.querySelectorAll('.step-content').forEach(el => el.classList.add('hidden'));
+        // Show the targeted step
+        document.getElementById(`step-${step}-content`).classList.remove('hidden');
+
+        // Update progress bar. If we have 3 steps total:
+        // Step 1 => 0%, Step 2 => 50%, Step 3 => 100%
+        document.getElementById('progress-bar').style.width = `${(step - 1) * 50}%`;
+        };
+
+        /***** 5) Populate Checklist Dynamically *****/
+        const serviceList = document.getElementById('service-list');
+        services.forEach(service => {
+            const li = document.createElement('li');
+            li.innerHTML = `
+                <label>
+                    <input type="checkbox" data-hourly="${service.hourlyRate}" onclick="toggleDetails(this)">
+                    ${service.title} - $${service.hourlyRate}/hr
+                </label>
+                <ul class="details hidden">
+                    ${service.details.map(detail => `<li>${detail}</li>`).join("")}
+                </ul>
+            `;
+            serviceList.appendChild(li);
+        });
+      
+        // Show/hide details in the checklist (optional)
+        window.toggleDetails = function (checkbox) {
+          const details = checkbox.parentElement.nextElementSibling;
+          if (checkbox.checked) {
+            details.classList.remove('hidden');
+          } else {
+            details.classList.add('hidden');
+          }
+        };
+      
+        /***** 6) Form Submission Handling (Step 2 -> Step 3 -> Submit) *****/
+        const form = document.getElementById('client-form');
+      
+        // This runs when the user hits "Enter" inside Step 2, or if we do a .submit()
+        form.addEventListener('submit', async (e) => {
+          e.preventDefault(); // Prevents page reload
+      
+          // 1. Gather form data
+          const name = document.getElementById('name').value;
+          const companyName = document.getElementById('company-name').value;
+          const title = document.getElementById('title').value;
+          const projectDescription = document.getElementById('project-description').value;
+          const needBy = document.getElementById('need-by').value;
+      
+          // 2. Handle file upload if a file is chosen
+          const fileInput = document.getElementById('proposal-file');
+          const file = fileInput.files[0];
+          let downloadURL = '';
+      
+          if (file) {
+            try {
+              // Reference to "proposals/<filename>"
+              const fileRef = storageRef(storage, `proposals/${file.name}`);
+              // Upload the file
+              await uploadBytes(fileRef, file);
+              // Get a public download URL
+              downloadURL = await getDownloadURL(fileRef);
+            } catch (uploadErr) {
+              console.error('Error uploading file:', uploadErr);
+            }
+          }
+      
+          // 3. Save the data in Firestore
+          try {
+            await addDoc(collection(db, 'formSubmissions'), {
+              name,
+              companyName,
+              title,
+              projectDescription,
+              needBy,
+              fileURL: downloadURL,
+              timestamp: new Date()
+            });
+      
+            alert('Form submitted successfully!');
+            form.reset(); // Clear the form
+          } catch (err) {
+            console.error('Error saving data to Firestore:', err);
+            alert('Error submitting the form. Check console for details.');
+          }
+        });
+      
+        // Called from Step 3's "Submit" button
+        window.submitForm = function() {
+          // Trigger the HTML form's .submit(), which runs the code above
+          document.getElementById('client-form').submit();
+        };
+      </script>
+      
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 Automated Research Tools, LLC. All rights reserved.</p>
+    </footer>
+</body>
+</html>
